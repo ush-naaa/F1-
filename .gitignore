@@ -1,0 +1,14 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Data (large, regeneratable — don't commit)
+data/raw/
+data/processed/
+*.parquet
+
+# Editor/OS
+.vscode/
+.DS_Store
