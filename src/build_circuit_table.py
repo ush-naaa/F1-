@@ -19,28 +19,10 @@ Writes: data/processed/circuit_table.parquet
 import os
 import pandas as pd
 
+from f1_utils import is_dnf as _is_dnf, STREET_CIRCUITS
+
 RAW_DIR = "data/raw"
 PROCESSED_DIR = "data/processed"
-
-# Circuits that are run on closed public roads / temporary street layouts.
-# Overtaking is harder and DNF-by-barrier-contact is more common here.
-# circuit_id values match Jolpica's naming.
-STREET_CIRCUITS = {
-    "monaco",       # Monaco GP
-    "baku",         # Azerbaijan GP
-    "marina_bay",   # Singapore GP
-    "jeddah",       # Saudi Arabian GP
-    "miami",        # Miami GP (semi-permanent street-style circuit)
-    "vegas",        # Las Vegas GP
-}
-
-# Jolpica's `status` field uses a fixed small set of values. A driver is
-# a DNF (did not finish/classify normally) unless they're "Finished" or
-# "Lapped" (still classified, just laps down — NOT a retirement).
-CLASSIFIED_FINISH_STATUSES = {"Finished", "Lapped"}
-
-def _is_dnf(status: str) -> bool:
-    return status not in CLASSIFIED_FINISH_STATUSES
 
 
 def build_circuit_table() -> pd.DataFrame:

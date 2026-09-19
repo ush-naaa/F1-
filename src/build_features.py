@@ -25,6 +25,8 @@ import re
 import pandas as pd
 import numpy as np
 
+from f1_utils import is_dnf
+
 RAW_DIR = "data/raw"
 PROCESSED_DIR = "data/processed"
 
@@ -57,7 +59,7 @@ def load_raw():
 def add_race_date_and_sort(race: pd.DataFrame, schedule: pd.DataFrame) -> pd.DataFrame:
     race = race.merge(schedule[["year", "round", "date", "circuit_id"]], on=["year", "round"], how="left")
     race["date"] = pd.to_datetime(race["date"])
-    race["is_dnf"] = race["status"].apply(lambda s: s not in ("Finished", "Lapped"))
+    race["is_dnf"] = race["status"].apply(is_dnf)
     return race.sort_values(["date", "driver_id"]).reset_index(drop=True)
 
 
